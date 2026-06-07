@@ -25,13 +25,11 @@
 
 namespace enrol_groupsync\privacy;
 
-defined('MOODLE_INTERNAL') || die();
-
 use core_privacy\local\metadata\collection;
 use core_privacy\local\request\approved_contextlist;
+use core_privacy\local\request\approved_userlist;
 use core_privacy\local\request\contextlist;
 use core_privacy\local\request\userlist;
-use core_privacy\local\request\approved_userlist;
 
 /**
  * Privacy API implementation for the Cohort members to group plugin.
@@ -44,15 +42,13 @@ class provider implements
         \core_privacy\local\request\plugin\provider,
         \core_privacy\local\request\core_userlist_provider {
 
-    use \core_privacy\local\legacy_polyfill;
-
     /**
      * Describe all the places where the Cohort members to group plugin stores some personal data.
      *
      * @param collection $collection Collection of items to add metadata to.
      * @return collection Collection with our added items.
      */
-    public static function _get_metadata(collection $collection) {
+    public static function get_metadata(collection $collection): collection {
 
         $collection->add_subsystem_link('core_group', [], 'privacy:metadata:subsystem:group');
 
@@ -65,7 +61,7 @@ class provider implements
      * @param int $userid ID of the user.
      * @return contextlist List of contexts containing the user's personal data.
      */
-    public static function _get_contexts_for_userid($userid) {
+    public static function get_contexts_for_userid(int $userid): contextlist {
 
         $contextlist = new contextlist();
 
@@ -78,7 +74,7 @@ class provider implements
 
         $params = [
             'contextlevel' => CONTEXT_COURSE,
-            'userid' => $userid
+            'userid' => $userid,
         ];
 
         $contextlist->add_from_sql($sql, $params);
@@ -106,8 +102,7 @@ class provider implements
      *
      * @param approved_contextlist $contextlist List of contexts approved for export.
      */
-    public static function _export_user_data(approved_contextlist $contextlist) {
-        global $DB;
+    public static function export_user_data(approved_contextlist $contextlist) {
 
         if (!count($contextlist)) {
             return;
@@ -127,9 +122,9 @@ class provider implements
     /**
      * Delete personal data for all users in the context.
      *
-     * @param context $context Context to delete personal data from.
+     * @param \context $context Context to delete personal data from.
      */
-    public static function _delete_data_for_all_users_in_context(\context $context) {
+    public static function delete_data_for_all_users_in_context(\context $context) {
 
         if ($context->contextlevel == CONTEXT_COURSE) {
             \core_group\privacy\provider::delete_groups_for_all_users($context, 'enrol_groupsync');
@@ -141,7 +136,7 @@ class provider implements
      *
      * @param approved_contextlist $contextlist List of contexts to delete data from.
      */
-    public static function _delete_data_for_user(approved_contextlist $contextlist) {
+    public static function delete_data_for_user(approved_contextlist $contextlist) {
 
         if (!$contextlist->count()) {
             return;
