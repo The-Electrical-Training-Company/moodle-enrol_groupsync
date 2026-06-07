@@ -28,3 +28,4 @@ $string['instanceexists'] = 'Cohort is already synchronised with selected group'
 $string['pluginname'] = 'Cohort members to group';
 $string['pluginname_desc'] = 'Cohort to group sync plugin synchronises cohort members with group, this plugin does not enrol anybody.';
 $string['privacy:metadata:subsystem:group'] = 'The plugin adds the user into the course groups based on their cohort membership.';
+$string['synctask'] = 'Synchronise cohort to group memberships';
