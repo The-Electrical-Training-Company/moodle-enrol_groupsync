@@ -130,17 +130,6 @@ class enrol_groupsync_plugin extends enrol_plugin {
     }
 
     /**
-     * Called for all enabled enrol plugins that returned true from is_cron_required().
-     * @return void
-     */
-    public function cron() {
-        global $CFG;
-
-        require_once("$CFG->dirroot/enrol/groupsync/locallib.php");
-        enrol_groupsync_sync();
-    }
-
-    /**
      * Is it possible to hide/show enrol instance via standard UI?
      *
      * @param stdClass $instance
