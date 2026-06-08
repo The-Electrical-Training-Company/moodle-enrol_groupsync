@@ -43,7 +43,7 @@ function enrol_groupsync_sync($courseid = null, $verbose = false) {
         $sql = "SELECT gm.groupid, gm.userid
                   FROM {groups_members} gm
                  WHERE gm.component = 'enrol_groupsync'";
-        $rs = $DB->get_recordset_sql($sql, array());
+        $rs = $DB->get_recordset_sql($sql, []);
         foreach ($rs as $gm) {
             groups_remove_member($gm->groupid, $gm->userid);
         }
@@ -53,18 +53,18 @@ function enrol_groupsync_sync($courseid = null, $verbose = false) {
     }
 
     // Unfortunately this may take a long time, this script can be interrupted without problems.
-    @set_time_limit(0);
+    \core_php_time_limit::raise();
 
     if ($verbose) {
         mtrace('Starting cohort to group membership synchronisation...');
     }
 
     if ($courseid) {
-        $params = array('enabled' => ENROL_INSTANCE_ENABLED, 'courseid' => $courseid);
+        $params = ['enabled' => ENROL_INSTANCE_ENABLED, 'courseid' => $courseid];
         $courseselect = "AND e.courseid = :courseid";
 
     } else {
-        $params = array('enabled' => ENROL_INSTANCE_ENABLED);
+        $params = ['enabled' => ENROL_INSTANCE_ENABLED];
         $courseselect = "";
     }
 

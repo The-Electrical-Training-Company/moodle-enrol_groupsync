@@ -18,7 +18,7 @@
  * Cohort to group sync plugin uninstallation.
  *
  * @package    enrol_groupsync
- * @copyright  20112 Petr Skoda {@link http://skodak.org}
+ * @copyright  2012 Petr Skoda {@link http://skodak.org}
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
@@ -31,7 +31,7 @@ function xmldb_enrol_groupsync_uninstall() {
     global $DB;
 
     $cohort = enrol_get_plugin('groupsync');
-    $rs = $DB->get_recordset('enrol', array('enrol' => 'groupsync'));
+    $rs = $DB->get_recordset('enrol', ['enrol' => 'groupsync']);
     foreach ($rs as $instance) {
         $cohort->delete_instance($instance);
     }

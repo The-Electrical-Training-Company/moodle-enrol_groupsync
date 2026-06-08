@@ -1,3 +1,12 @@
+## 1.3.0 ##
+
+* Compatibility update for Moodle 4.5.
+* Migrated legacy cron implementation to a scheduled task.
+* Modernised the privacy provider (removed legacy_polyfill, added type hints).
+* Namespaced PHPUnit tests to match current Moodle test conventions.
+* Short array syntax and other coding style cleanups.
+* Removed obsolete Travis-CI configuration.
+
 ## 1.2.2 ##
 
 * Travis-CI update only.

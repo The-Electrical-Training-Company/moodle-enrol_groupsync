@@ -42,18 +42,18 @@ class enrol_groupsync_edit_form extends moodleform {
 
         $mform  = $this->_form;
 
-        list($instance, $plugin, $course) = $this->_customdata;
+        [$instance, $plugin, $course] = $this->_customdata;
         $coursecontext = context_course::instance($course->id);
 
         $mform->addElement('header', 'general', get_string('pluginname', 'enrol_groupsync'));
 
-        $nameattribs = array('size' => '20', 'maxlength' => '255');
+        $nameattribs = ['size' => '20', 'maxlength' => '255'];
         $mform->addElement('text', 'name', get_string('custominstancename', 'enrol'), $nameattribs);
         $mform->setType('name', PARAM_TEXT);
         $mform->addRule('name', get_string('maximumchars', '', 255), 'maxlength', 255, 'server');
 
-        $cohorts = array('' => get_string('choosedots'));
-        list($sqlparents, $params) = $DB->get_in_or_equal($coursecontext->get_parent_context_ids());
+        $cohorts = ['' => get_string('choosedots')];
+        [$sqlparents, $params] = $DB->get_in_or_equal($coursecontext->get_parent_context_ids());
         $sql = "SELECT id, name, idnumber, contextid
                   FROM {cohort}
                  WHERE contextid $sqlparents
@@ -70,9 +70,9 @@ class enrol_groupsync_edit_form extends moodleform {
         $mform->addElement('select', 'customint1', get_string('cohort', 'cohort'), $cohorts);
         $mform->addRule('customint1', get_string('required'), 'required', null, 'client');
 
-        $groups = array('' => get_string('choosedots'));
+        $groups = ['' => get_string('choosedots')];
         foreach (groups_get_all_groups($course->id) as $group) {
-            $groups[$group->id] = format_string($group->name, true, array('context' => $coursecontext));
+            $groups[$group->id] = format_string($group->name, true, ['context' => $coursecontext]);
         }
         $mform->addElement('select', 'customint2', get_string('addgroup', 'enrol_groupsync'), $groups);
         $mform->addRule('customint2', get_string('required'), 'required', null, 'client');
@@ -97,7 +97,7 @@ class enrol_groupsync_edit_form extends moodleform {
 
         $errors = parent::validation($data, $files);
 
-        $params = array('customint2' => $data['customint2'], 'customint1' => $data['customint1'], 'courseid' => $data['courseid']);
+        $params = ['customint2' => $data['customint2'], 'customint1' => $data['customint1'], 'courseid' => $data['courseid']];
         if ($DB->record_exists_select('enrol', "customint1 = :customint1 AND customint2 = :customint2 AND courseid = :courseid
                 AND enrol = 'groupsync'", $params)) {
             $errors['customint2'] = get_string('instanceexists', 'enrol_groupsync');
